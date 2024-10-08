@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "WhatsApp Web Assistant",
+  "version": "1.0",
+  "description": "An extension for WhatsApp Web to get chat information.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://web.whatsapp.com/"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "64": "./logo.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "64": "./logo.png"
+  }
+}
