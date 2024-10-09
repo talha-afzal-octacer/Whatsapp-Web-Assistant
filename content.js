@@ -57,7 +57,7 @@
             const chatObserver = new MutationObserver(() => {
                 const mainEle = document.getElementById("main");
                 if (!mainEle) {
-                    Utils.logAndAlert("Chat box not opened yet - main not found");
+                    Utils.log("Chat box not opened yet - main not found");
                     return;
                 }
 
@@ -72,29 +72,29 @@
     function getChatData() {
         const chatNameEle = document.querySelector("#main ._amie ._amig");
         const chatName = chatNameEle ? chatNameEle.innerText.trim() : "Unknown";
-    
+
         WebPlugin.currentChatTitle = chatName;
-    
+
         const isSaved = !/^\+?\d{1,4}[\s-]?(\d[\s-]?){6,14}\d$/.test(chatName);
         const headerText = chatNameEle?.closest("._amie")?.innerText || "";
-    
-        const chatType = isSaved 
-            ? (headerText.includes("group") ? "Group" : headerText.includes("Business") ? "Business" : "User") 
+
+        const chatType = isSaved
+            ? (headerText.includes("group") ? "Group" : headerText.includes("Business") ? "Business" : "User")
             : "Unknown";
-    
+
         return { isSaved, type: chatType };
     }
-    
+
 
     function processChat(chatResult) {
         if (chatResult.isSaved) {
             if (chatResult.type === "Group") {
-                Utils.logAndAlert('This is a group chat.');
+                Utils.log('This is a group chat.');
             } else {
                 openProfileSidebar(chatResult);
             }
         } else {
-            Utils.logAndAlert(`This is a chat with an unsaved number.\nPhone Number: ${WebPlugin.currentChatTitle}`);
+            Utils.log(`This is a chat with an unsaved number.\nPhone Number: ${WebPlugin.currentChatTitle}`);
         }
     }
 
@@ -131,7 +131,15 @@
 
         if (phoneNumberElement) {
             const phoneNumber = phoneNumberElement.innerText || 'Phone number not available';
-            Utils.logAndAlert(`Contact Name: ${WebPlugin.currentChatTitle}\nPhone Number: ${phoneNumber}`);
+            //Utils.logAndAlert(`Contact Name: ${WebPlugin.currentChatTitle}\nPhone Number: ${phoneNumber}`);
+
+            const contactInfo = {
+                contactName: WebPlugin.currentChatTitle,
+                phoneNumber: phoneNumber
+            };
+            const jsonString = JSON.stringify(contactInfo, null, 2);
+            Utils.log(`Contact Information: ${jsonString}`);
+
             closeProfileSidebar();
         } else {
             Utils.log('Phone number not found. Retrying...');
